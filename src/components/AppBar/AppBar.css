@@ -1,0 +1,12 @@
+.navbar,
+.navbar-dark {
+  background-image: linear-gradient(
+    to bottom,
+    rgb(89, 161, 39) 0,
+    rgb(89, 161, 39) 100%
+  ) !important; /* override background image gradient w/ flat color */
+}
+
+.navbar-default .navbar-brand {
+  color: rgb(255, 255, 255);
+}

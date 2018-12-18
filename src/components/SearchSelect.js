@@ -1,51 +1,49 @@
 import React, { Component } from "react";
-import { Select, Heading, Box, Text, Button } from "grommet";
+import Select from "react-select";
 
 class SearchSelect extends Component {
   constructor(props) {
     super();
-    this.state = { option: "", options: [], value: "" };
+    this.state = { options: [] };
   }
+
+  // Restructure stations list from api to option list for select component
+  restructureOptions = options => {
+    return options.map((option, i) => {
+      return {
+        label: option.stationName,
+        value: option.stationName,
+        stationShortCode: option.stationShortCode
+      };
+    });
+  };
 
   componentDidMount = () => {
     this.setState({
-      options: this.props.stations,
-      stations: this.props.stations
+      options: this.restructureOptions(this.props.stations)
     });
   };
 
   render() {
-    const { option, options, value } = this.state;
+    const { options } = this.state;
     return (
-      <Box>
-        <Heading level="4">Hae aseman nimellä</Heading>
+      <div>
+        <h5>Hae aseman nimellä</h5>
         <Select
-          placeholder="Aseman nimi"
-          dropHeight="medium"
-          emptySearchMessage="Ei hakutuloksia"
-          focusIndicator={false}
+          className="basic-single"
+          classNamePrefix="select"
+          isClearable={true}
+          isSearchable={true}
+          openMenuOnClick={false}
+          openMenuOnFocus={false}
+          name="Asemat"
+          placeholder="Valitse asema..."
           options={options}
-          value={value}
-          children={(option, index, options, state) => {
-            return <Text>{option.stationName}</Text>;
-          }}
-          onSearch={searchText => {
-            const regexp = new RegExp(searchText, "i");
-            this.setState({
-              options: this.state.stations.filter(o =>
-                o.stationName.match(regexp)
-              )
-            });
-          }}
-          onChange={event => {
-            this.setState({
-              value: event.value.stationName,
-              option: event.option
-            });
-            this.props.setStation(event.value);
+          onChange={val => {
+            this.props.setStation(val);
           }}
         />
-      </Box>
+      </div>
     );
   }
 }

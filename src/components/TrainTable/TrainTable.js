@@ -1,38 +1,121 @@
 import React, { Component } from "react";
-import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableHeader,
-  TableRow,
-  Text
-} from "grommet";
+import { Table } from "react-bootstrap";
+import "./TrainTable.css";
 
+// Components
 import TrainTableRow from "./TrainTableRow";
 
-const trains = []
-
 class TrainTable extends Component {
+  constructor(props) {
+    super();
+    this.state = {};
+  }
+
+  renderRows = (trains, stations, stationShortCode, stationName, type) => {
+    if (trains !== null) {
+      let trainRows = trains.map((train, i) => {
+        // Only get trains which are Long-distance or Commuter trains.
+        if (
+          train.trainCategory === "Long-distance" ||
+          train.trainCategory === "Commuter"
+        ) {
+          let error = false;
+
+          // Get selected station's row from list of stations where train stops
+          let stop = train.timeTableRows.filter(
+            row =>
+              row.stationShortCode === stationShortCode && row.type === type
+          );
+          if (stop.length < 1) {
+            error = true;
+          } else {
+            stop = stop[0];
+            console.log(stop);
+          }
+
+          // Train name/code
+          let trainCode;
+          if (train.trainCategory === "Commuter") {
+            trainCode = "Commuter Train " + train.commuterLineID;
+          } else trainCode = train.trainType + " " + train.trainNumber;
+
+          // Get final destination shortcode and find the real name from station list.
+          const destStationShortCode =
+            train.timeTableRows[train.timeTableRows.length - 1]
+              .stationShortCode;
+
+          let destinationStation = stations.filter(
+            station => station.stationShortCode === destStationShortCode
+          );
+          // If train isn't found from the station list, it will not show on the table
+          if (
+            !destinationStation[0] ||
+            destinationStation[0].stationName === undefined
+          ) {
+            destinationStation = destStationShortCode;
+            error = true;
+          } else {
+            destinationStation = destinationStation[0].stationName;
+          }
+
+          // If this is the trains final destination, error
+          if (destStationShortCode === stationShortCode) error = true;
+
+          if (!error)
+            return (
+              <TrainTableRow
+                key={i}
+                trainNumber={trainCode}
+                departureStation={stationName}
+                destinationStation={destinationStation}
+                scheduledTime={stop.scheduledTime}
+                liveEstimateTime={stop.liveEstimateTime}
+                actualTime={stop.actualTime}
+                cancelled={stop.cancelled}
+              />
+            );
+          return undefined;
+        }
+      });
+
+      // Sort array of components by date
+      return trainRows.sort((a, b) => {
+        return (
+          new Date(a.props.scheduledTime) - new Date(b.props.scheduledTime)
+        );
+      });
+    }
+  };
+
   render() {
     return (
-      <Box>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell verticalAlign="middle">Juna</TableCell>
-              <TableCell verticalAlign="middle">Lähtöasema</TableCell>
-              <TableCell verticalAlign="middle">Pääteasema</TableCell>
-              <TableCell verticalAlign="middle">Aika</TableCell>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TrainTableRow colored />
-            <TrainTableRow />
-          </TableBody>
-        </Table>
-      </Box>
+      <Table striped>
+        <thead>
+          <tr>
+            <th>
+              <small className="text-muted ">Juna</small>
+            </th>
+            <th>
+              <small className="text-muted ">Lähtöasema</small>
+            </th>
+            <th>
+              <small className="text-muted ">Pääteasema</small>
+            </th>
+            <th>
+              <small className="text-muted ">Aika</small>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.renderRows(
+            this.props.trains,
+            this.props.stations,
+            this.props.stationShortCode,
+            this.props.stationName,
+            this.props.type
+          )}
+        </tbody>
+      </Table>
     );
   }
 }

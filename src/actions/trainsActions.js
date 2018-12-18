@@ -67,13 +67,14 @@ export const getTrainsByStation = stationShortCode => dispatch => {
         stationShortCode,
       {
         params: {
-          minutes_before_departure: 10,
-          minutes_after_departure: 10
+          minutes_before_departure: 120,
+          minutes_after_departure: 1,
+          minutes_before_arrival: 120,
+          minutes_after_arrival: 1
         }
       }
     )
     .then(res => {
-      console.log(res);
       dispatch({
         type: GET_TRAINS_BY_STATION,
         payload: res.data
