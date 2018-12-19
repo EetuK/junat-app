@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import "./TrainView.css";
 
 import { getStations, getTrainsByStation } from "../../actions/trainsActions";
-import SearchSelect from "../SearchSelect";
+import SearchSelect from "../SearchSelect/SearchSelect";
 import TrainTable from "../TrainTable/TrainTable";
 
 class TrainView extends Component {

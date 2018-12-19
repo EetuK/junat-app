@@ -31,21 +31,24 @@ class TrainTableRow extends Component {
       destinationStation,
       scheduledTime,
       liveEstimateTime,
-      actualTime,
       cancelled
     } = this.props;
-
-    console.log(liveEstimateTime);
 
     let trainTableRow;
 
     if (cancelled) {
       trainTableRow = (
-        <tr>
-          <td>{trainNumber}</td>
-          <td>{departureStation}</td>
-          <td>{destinationStation}</td>
-          <td>{this.dateToTime(scheduledTime)}</td>
+        <tr className="text-muted">
+          <td>
+            <del>{trainNumber}</del>
+          </td>
+          <td>
+            <del>{departureStation}</del>
+          </td>
+          <td>
+            <del>{destinationStation}</del>
+          </td>
+          <td className="red-font">Cancelled</td>
         </tr>
       );
     } else {

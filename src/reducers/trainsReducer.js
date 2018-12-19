@@ -1,7 +1,5 @@
 import {
   GET_STATIONS,
-  GET_ARRIVING_TRAINS_BY_STATION,
-  GET_DEPARTING_TRAINS_BY_STATION,
   TRAINS_LOADING,
   STATIONS_LOADING,
   GET_TRAINS_BY_STATION
@@ -10,8 +8,6 @@ import {
 const initialState = {
   stations: null,
   trains: null,
-  arrivingTrains: null,
-  departingTrains: null,
   stationsLoading: false,
   trainsLoading: false
 };
@@ -43,19 +39,6 @@ export default function(state = initialState, action) {
         trainsLoading: false
       };
 
-    case GET_ARRIVING_TRAINS_BY_STATION:
-      return {
-        ...state,
-        trains: null,
-        trainsLoading: false
-      };
-
-    case GET_DEPARTING_TRAINS_BY_STATION:
-      return {
-        ...state,
-        trains: null,
-        trainsLoading: false
-      };
     default:
       return state;
   }
