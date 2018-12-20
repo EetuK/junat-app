@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 /*
 <TableRow>
@@ -80,6 +81,15 @@ class TrainTableRow extends Component {
   }
 }
 
-// TODO: proptypes
+TrainTableRow.propTypes = {
+  key: PropTypes.number.isRequired,
+  trainNumber: PropTypes.string.isRequired,
+  departureStation: PropTypes.string.isRequired,
+  destinationStation: PropTypes.string.isRequired,
+  scheduledTime: PropTypes.string.isRequired,
+  liveEstimateTime: PropTypes.string,
+  actualTime: PropTypes.string,
+  cancelled: PropTypes.bool
+};
 
 export default TrainTableRow;

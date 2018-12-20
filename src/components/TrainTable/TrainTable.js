@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Table } from "react-bootstrap";
+import PropTypes from "prop-types";
 import "./TrainTable.css";
 
 // Components
@@ -74,8 +75,8 @@ class TrainTable extends Component {
                 cancelled={stop.cancelled}
               />
             );
-          return undefined;
         }
+        return undefined;
       });
 
       // Sort array of components by date
@@ -119,5 +120,13 @@ class TrainTable extends Component {
     );
   }
 }
+
+TrainTable.propTypes = {
+  trains: PropTypes.array.isRequired,
+  stations: PropTypes.array.isRequired,
+  stationShortCode: PropTypes.string.isRequired,
+  stationName: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired
+};
 
 export default TrainTable;

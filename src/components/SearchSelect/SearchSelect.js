@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Select from "react-select";
+import PropTypes from "prop-types";
 import "./SearchSelect.css";
 
 class SearchSelect extends Component {
@@ -31,8 +32,17 @@ class SearchSelect extends Component {
     const customStyles = {
       control: (base, state) => ({
         ...base,
-        boxShadow: "none"
-        // You can also use state.isFocused to conditionally style based on the focus state
+        "&:hover": { borderColor: "rgb(89, 161, 39)" }, // border style on hover
+        border: "1px solid gray", // default border color
+        boxShadow: "none" // no box-shadow
+      }),
+      option: (provided, state) => ({
+        ...provided,
+        color: "black",
+        backgroundColor: state.isFocused ? "rgba(89, 161, 39, 0.3)" : "white",
+        ":active": {
+          backgroundColor: "rgba(89, 161, 39, 0.7)"
+        }
       })
     };
 
@@ -52,28 +62,16 @@ class SearchSelect extends Component {
           onChange={val => {
             this.props.setStation(val);
           }}
-          styles={{
-            control: (base, state) => ({
-              ...base,
-              "&:hover": { borderColor: "rgb(89, 161, 39)" }, // border style on hover
-              border: "1px solid gray", // default border color
-              boxShadow: "none" // no box-shadow
-            }),
-            option: (provided, state) => ({
-              ...provided,
-              color: "black",
-              backgroundColor: state.isFocused
-                ? "rgba(89, 161, 39, 0.3)"
-                : "white",
-              ":active": {
-                backgroundColor: "rgba(89, 161, 39, 0.7)"
-              }
-            })
-          }}
+          styles={customStyles}
         />
       </div>
     );
   }
 }
+
+SearchSelect.propTypes = {
+  stations: PropTypes.array.isRequired,
+  setStation: PropTypes.func.isRequired
+};
 
 export default SearchSelect;
