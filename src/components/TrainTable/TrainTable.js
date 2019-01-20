@@ -9,7 +9,6 @@ import TrainTableRow from "./TrainTableRow";
 class TrainTable extends Component {
   constructor(props) {
     super();
-    this.state = {};
   }
 
   renderRows = (trains, stations, stationShortCode, stationName, type) => {
@@ -31,7 +30,6 @@ class TrainTable extends Component {
             error = true;
           } else {
             stop = stop[0];
-            console.log(stop);
           }
 
           // Train name/code
@@ -122,7 +120,7 @@ class TrainTable extends Component {
 }
 
 TrainTable.propTypes = {
-  trains: PropTypes.array.isRequired,
+  trains: PropTypes.array,
   stations: PropTypes.array.isRequired,
   stationShortCode: PropTypes.string.isRequired,
   stationName: PropTypes.string.isRequired,
